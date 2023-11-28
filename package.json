@@ -1,5 +1,5 @@
 {
-  "name": "nodemysql",
+  "name": "node_mysql",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

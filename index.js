@@ -19,12 +19,38 @@ app.use(express.urlencoded({
 app.use(express.json())
 
 //rotas
-app.get("/"register, (request, response) => {
-response.render("register")
+app.get("/register/save", (request, response) => {
+    const { title, pageqty } = request.body
+
+    const query = `
+    INSERT INTO  books (title , pageqty) 
+    VALUES ('${title}','${pageqty}')
+    `
+    conn.query(query, (error) => {
+        if (error) {
+            console.log(error)
+            return
+        }
+        response.redirect("/")
+    })
+})
+
+app.get("/register", (request, response) => {
+    response.render("register")
 })
 
 app.get("/", (requisicao, resposta) => {
-    resposta.render("home")
+    const query = 'SELECT * FROM books'
+
+    conn.query(sql, (error, data) => {
+        if (error) {
+            return console.log(error)
+        }
+        const books = data
+        resposta.render("home", { books })
+    })
+
+
 })
 
 // conexão com o mySQL
