@@ -1,11 +1,11 @@
 const express = require("express")
-const exprhbs = require("express-handlebars")
+const exphbs = require("express-handlebars")
 const mysql = require("mysql2")
 
 const app = express()
 
 // definindo o handlebar como template engine
-app.engine ("handlebars", exphbs.engine())
+app.engine("handlebars", exphbs.engine())
 app.set("view engine", "handlebars")
 
 // past de arquivos estáticos com CSS, imagens
@@ -18,31 +18,9 @@ app.use(express.urlencoded({
 
 app.use(express.json())
 
-// rotas
-app.post("/register/save", (request, response) => {
-    const { title, pageqty } = request.body
-
-    const query = `
-    INSERT INTO boooks (title, pageqty)
-    VALUES ('${title}', '${pageqty}')
-    `
-
-    conn.query(query, (error) => {
-        if (error) {
-            console.log(error)
-            return
-        }
-        
-        response.redirect("/")
-        
-    })
-})
-
-app.get("/register", (request,responce) => {
-    responce.render("register")
-})
-app.get('/', (request,responce) => {
-    responce.render("home")
+//rotas 
+app.get("/", (requisicao, resposta) => {
+    resposta.render("home")
 })
 
 // conexão com o mySQL
@@ -62,7 +40,9 @@ conn.connect((error) => {
 
     console.log("Conectando ao MySQL!")
 
-    app.listen(3000, () => {
+    app.listen(3306, () => {
         console.log("Servidor rodando na porta 3000!")
     })
 })
+
+
