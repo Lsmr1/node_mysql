@@ -18,7 +18,11 @@ app.use(express.urlencoded({
 
 app.use(express.json())
 
-//rotas 
+//rotas
+app.get("/"register, (request, response) => {
+response.render("register")
+})
+
 app.get("/", (requisicao, resposta) => {
     resposta.render("home")
 })
