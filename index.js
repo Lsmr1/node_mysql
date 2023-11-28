@@ -19,6 +19,24 @@ app.use(express.urlencoded({
 app.use(express.json())
 
 //rotas
+app.post("/edit/save", (request, response) => {
+    const { id, title, pageqty } = request.body
+
+    const sql = `
+    UPDATE books
+    SET title = '${title}', pageqty = '${pageqty}'
+    WHERE id = ${id}
+    `
+
+    conn.query(sql, (error) => {
+        if (error) {
+            return console.log(error)
+        }
+
+        response.redirect("/")
+    })
+})
+
 app.get("/register/save", (request, response) => {
     const { title, pageqty } = request.body
 
@@ -34,6 +52,40 @@ app.get("/register/save", (request, response) => {
         response.redirect("/")
     })
 })
+app.get("/edit/:id", (request, response) => {
+    const id = request.params.id
+
+    const sql = `SELECT * FROM books WHERE id = ${id}`
+    
+    conn.query(sql, (error, data ) => {
+        if (error) {
+            return console.log(error)
+        }
+        
+        const book = data[0]
+
+        responce.render('edit', { book })
+    })
+})
+
+app.get("/book/:id", (resquest, responce) => {
+const id = request.params.id
+
+const sql = `
+    SELECT * FROM books
+    WHERE id=${id}
+    `
+    
+    conn.query(sql,(error, data) => {
+        if(error) {
+            return console.log(error)
+        }
+        
+        const book = data[0]
+
+        responce.render("book", {book})
+    })
+})
 
 app.get("/register", (request, response) => {
     response.render("register")
@@ -47,6 +99,7 @@ app.get("/", (requisicao, resposta) => {
             return console.log(error)
         }
         const books = data
+        console.log(books)
         resposta.render("home", { books })
     })
 
